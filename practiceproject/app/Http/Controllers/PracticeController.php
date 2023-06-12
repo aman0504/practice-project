@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Detail;
 use Illuminate\Support\Facades\Crypt;
+use  App\Models\IncrementModel;
 
 class PracticeController extends Controller
 {
@@ -42,6 +43,12 @@ public function incDecr()
 {
     return view('increment');
 }
+
+public function countrycodeIndex()
+{
+    return view('countyCode');
+}
+
 
 
 }
