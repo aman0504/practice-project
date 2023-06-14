@@ -22,7 +22,7 @@
 
 <body class="antialiased">
 
-    <a href="{{route('selectMultipleIndex')}}"><b> MutiSelector 2 </b></h1>
+
 
 
 
@@ -48,11 +48,20 @@
         </a>
 
         <a href="{{ route('map.googleMap') }}">
-            <h2>3..........GoogleMap</h2>
+            <h2>4..........GoogleMap</h2>
         </a>
 
         <a href="{{ route('spatieimage.create') }}">
-            <h2>3..........Image Save using Spatie package </h2>
+            <h2>5..........Image Save using Spatie package </h2>
+        </a>
+
+        <a href="{{ route('payment.show') }}">
+            <h2>6..........Stripe Payment </h2>
+        </a>
+
+
+        <a href="{{route('selectMultipleIndex')}}">
+            <h2>7........... MutiSelector 2 </h2>
         </a>
     </div>
 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\availabilityController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\GoogelMapController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PracticeController;
 use App\Http\Controllers\PracticeReceiverController;
 
@@ -58,7 +59,14 @@ Route::get('/map', [GoogelMapController::class, 'index'])->name('map.googleMap')
 Route::get('/create',[ClientController::class, 'create'])->name('spatieimage.create');
 Route::post('/save',[ClientController::class, 'store'])->name('spatieimage.store');
 
-// multi select2
+// multi select2   ...its working
 Route::get('/selectIndex',[availabilityController::class,'selectIndex'])->name('selectMultipleIndex');
 Route::post('/selectMultiple',[availabilityController::class,'selectMultiple'])->name('selectMultiple');
+
+//stripe
+Route::get('/billing',[PaymentController::class,'show'])->name('payment.show');
+Route::post('/create-account', [PaymentController::class, 'getCardDetails'])->name('getCardDetails');
+
+Route::post('/account', [PaymentController::class, 'createAccount'])->name('stripe.create-account');
+Route::post('/payment', [PaymentController::class, 'processPayment'])->name('payment.process');
 
