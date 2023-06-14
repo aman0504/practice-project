@@ -13,15 +13,15 @@
 </head>
 <body>
     <h2> Increment Decrement operator</h2>
-1. increment by 1 0r 2  or 0.01
+1. increment by 1 0r 2  or 0.01   using jquery
 
 <div class="card-second-content">
 <div class="card_row_3">
     <span class="est">Price (in USD)</span>
     <div class="incremnt_decrmnt number for_alternative">
-        <span class="minus">-</span>
+        <button type="button" class="minus">-</button>
         <input type="text" value="1" id="custom-service-price">
-        <span class="plus">+</span>
+        <button type="button" class="plus">+</button>
     </div>
 </div>
 </div>
