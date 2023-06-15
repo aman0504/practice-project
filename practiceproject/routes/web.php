@@ -66,7 +66,6 @@ Route::post('/selectMultiple',[availabilityController::class,'selectMultiple'])-
 //stripe
 Route::get('/billing',[PaymentController::class,'show'])->name('payment.show');
 Route::post('/create-account', [PaymentController::class, 'getCardDetails'])->name('getCardDetails');
-
-Route::post('/account', [PaymentController::class, 'createAccount'])->name('stripe.create-account');
-Route::post('/payment', [PaymentController::class, 'processPayment'])->name('payment.process');
-
+Route::get('/update-card-details/{id}', [PaymentController::class, 'cardEdit'])->name('cardEdit');
+Route::post('/updateCard-details/{id}', [PaymentController::class, 'updateCard'])->name('updateCard');
+Route::delete('/delete-card/{id}', [PaymentController::class, 'delete'])->name('deleteCard');
