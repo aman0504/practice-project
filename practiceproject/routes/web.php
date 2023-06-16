@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\availabilityController;
+use App\Http\Controllers\BankInfoController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\GoogelMapController;
 use App\Http\Controllers\PaymentController;
@@ -63,9 +64,20 @@ Route::post('/save',[ClientController::class, 'store'])->name('spatieimage.store
 Route::get('/selectIndex',[availabilityController::class,'selectIndex'])->name('selectMultipleIndex');
 Route::post('/selectMultiple',[availabilityController::class,'selectMultiple'])->name('selectMultiple');
 
-//stripe
+//stripe  customer charge api's (charge using card)........
 Route::get('/billing',[PaymentController::class,'show'])->name('payment.show');
 Route::post('/create-account', [PaymentController::class, 'getCardDetails'])->name('getCardDetails');
 Route::get('/update-card-details/{id}', [PaymentController::class, 'cardEdit'])->name('cardEdit');
 Route::post('/updateCard-details/{id}', [PaymentController::class, 'updateCard'])->name('updateCard');
 Route::delete('/delete-card/{id}', [PaymentController::class, 'delete'])->name('deleteCard');
+Route::get('/refundCharges-details/{id}', [PaymentController::class, 'refundCharges'])->name('refundCharges');
+
+//stripe connect account api (connect bank account for payment).......
+Route::get('/index',[BankInfoController::class, 'index'])->name('bankinfo.index');
+Route::get('/account-create',[BankInfoController::class, 'connectedAccountCreate'])->name('bankinfo.accountcreate');
+Route::get('/account/bankInfoError',[BankInfoController::class, 'bankInfoError'])->name('bankinfo.bankInfoError');
+Route::get('/account/bankInfoSuccess',[BankInfoController::class, 'bankInfoSuccess'])->name('bankinfo.bankInfoSuccess');
+Route::post('/account/saveBankDetails',[BankInfoController::class, 'saveBankDetails'])->name('bankinfo.saveBankDetails');
+Route::get('/account/connectedAccountDelete',[BankInfoController::class, 'connectedAccountDelete'])->name('bankinfo.connectedAccountDelete');
+Route::post('/account/connectedAccountUpdate',[BankInfoController::class, 'connectedAccountUpdate'])->name('bankinfo.connectedAccountUpdate');
+

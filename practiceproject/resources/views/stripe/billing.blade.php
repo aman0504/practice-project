@@ -1,3 +1,19 @@
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<style>
+
+.form-group input {
+    width: 23%;
+    padding: 5px;
+    /* margin: auto; */
+    display: block;
+    margin-bottom: 0px !important;
+}
+
+</style>
+
 <div class='container'>
     <form id="payment-form" action="{{ route('getCardDetails') }}" method="POST">
         @csrf
@@ -46,8 +62,8 @@
 </div>
 
 
-
-<table>
+<h2> <b> Card Details </b> </h2>
+<table class="table table-bordered">
     <thead>
         <tr>
             <th> S.No.</th>
@@ -80,25 +96,34 @@
     </tbody>
 </table>
 <br> <br>
-<table>
+
+<h2> <b> Payment Details </b> </h2>
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>S.No.</th>
+            <th>User name </th>
+            <th>Date</th>
             <th>Transaction ID </th>
             <th>Balance Transaction </th>
             <th>Customer </th>
             <th> Amount </th>
+            <th> Status </th>
+            <th> Action </th>
         </tr>
     </thead>
     <tbody>
         @foreach ($cardDetails->payment as $cardDetail)
             <tr>
                 <td> {{ $loop->iteration }}</td>
+                <td> name </td>
+                <td> date </td>
                 <td> {{ $cardDetail->transaction_id }}</td>
                 <td> {{ $cardDetail->balance_transaction }}</td>
                 <td> {{ $cardDetail->customer }}</td>
                 <td> {{ $cardDetail->amount }}</td>
-
+                <td> {{ $cardDetail->payment_status}} </td>
+                <td> <a href="{{route('refundCharges', $cardDetail->id)}}">Refund Payment</a> </td>
             <tr>
         @endforeach
     </tbody>

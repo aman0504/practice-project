@@ -58,10 +58,12 @@
         <a href="{{ route('payment.show') }}">
             <h2>6..........Stripe Payment </h2>
         </a>
-
+        <a href="{{ route('bankinfo.index') }}">
+            <h2>7..........Stripe connect account Payout </h2>
+        </a>
 
         <a href="{{route('selectMultipleIndex')}}">
-            <h2>7........... MutiSelector 2 </h2>
+            <h2>8........... MutiSelector 2 </h2>
         </a>
     </div>
 
