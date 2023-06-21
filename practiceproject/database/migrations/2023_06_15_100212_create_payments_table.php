@@ -24,6 +24,10 @@ return new class extends Migration
             $table->string('currency')->nullable();
             $table->string('amount')->nullable();
             $table->string('payment_status')->nullable();
+            $table->string('admin_getpaymenttransfer_id')->nullable();
+            $table->string('status')->nullable();
+            $table->string('admin_pay_to_worker_id')->nullable();
+            $table->string('is_refunded')->nullable();
             $table->timestamps();
         });
     }

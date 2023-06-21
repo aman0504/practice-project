@@ -72,6 +72,7 @@ Route::post('/updateCard-details/{id}', [PaymentController::class, 'updateCard']
 Route::delete('/delete-card/{id}', [PaymentController::class, 'delete'])->name('deleteCard');
 Route::get('/refundCharges-details/{id}', [PaymentController::class, 'refundCharges'])->name('refundCharges');
 
+
 //stripe connect account api (connect bank account for payment).......
 Route::get('/index',[BankInfoController::class, 'index'])->name('bankinfo.index');
 Route::get('/account-create',[BankInfoController::class, 'connectedAccountCreate'])->name('bankinfo.accountcreate');
@@ -80,4 +81,8 @@ Route::get('/account/bankInfoSuccess',[BankInfoController::class, 'bankInfoSucce
 Route::post('/account/saveBankDetails',[BankInfoController::class, 'saveBankDetails'])->name('bankinfo.saveBankDetails');
 Route::get('/account/connectedAccountDelete',[BankInfoController::class, 'connectedAccountDelete'])->name('bankinfo.connectedAccountDelete');
 Route::post('/account/connectedAccountUpdate',[BankInfoController::class, 'connectedAccountUpdate'])->name('bankinfo.connectedAccountUpdate');
+
+// stripe admin transfer(payout) to worker(in connect account)
+Route::get('/account/payByAdminToWorker',[PaymentController::class, 'payByAdminToWorker'])->name('payByAdminToWorker');
+
 

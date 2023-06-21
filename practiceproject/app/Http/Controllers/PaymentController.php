@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BankInfo;
 use Illuminate\Http\Request;
 use \Stripe\Stripe;
 use \Stripe\Customer;
 use App\Models\User;
 use App\Models\UserCard;
 use App\Models\payment;
+use Stripe\Transfer;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class PaymentController extends Controller
@@ -15,6 +17,8 @@ class PaymentController extends Controller
     use LivewireAlert;
 
     private $stripe;
+    public $amountCharged;
+
     public function __construct()
     {
         // get api_key
@@ -23,15 +27,16 @@ class PaymentController extends Controller
 
     public function show()
     {
-        $cardDetails =  User::with('userCard', 'payment')->find('1');
 
+        $cardDetails =  User::with('userCard', 'payment')->first();
+        // dd($cardDetails->toArray());
         return view('stripe.billing', compact('cardDetails'));
     }
 
 
     public function getCardDetails(Request $request)
     {
-        $user = User::find(1);
+        $user = User::find(3);
 
         $request->validate(
             [
@@ -51,14 +56,14 @@ class PaymentController extends Controller
                 $stripe = new \Stripe\StripeClient(config('services.stripe.secret'));
 
                 $charge = $stripe->charges->create([
-                    "amount" =>  4000 * 100,
+                    "amount" =>  4000 * 100,        // Convert amount to cents
                     "currency" => "usd",
-                    "customer" => $isUserCardSaved->customer_id,
+                    "customer" => $isUserCardSaved->customer_id,    //fetch from db bcz already exist
                     "description" => "Do charge a stripe customer",
                     "capture" => true,
                 ]);
 
-                $userDetail = payment::where('users_id', $isUserCardSaved->id)->first();
+                $userDetail = payment::where('users_id', $isUserCardSaved->users_id)->first();
                 // $userDetail->users_id = $user->id;
                 $userDetail->amount = $charge->amount;
                 $userDetail->customer = $charge->customer;
@@ -68,6 +73,26 @@ class PaymentController extends Controller
                 $userDetail->payment_status = $charge->status;
                 // $userDetail->user_cards_id =$token->card->id;
                 $userDetail->save();
+
+
+                //......................//.......................//......................
+                // Retrieve the customer and seller details
+                // $customer = Customer::where('email', $customerEmail)->first();
+                // $seller = BankInfo::where('users_id', $isUserCardSaved->users_id)->first(); // Replace with the appropriate logic to fetch the seller
+
+                // // Create a transfer from the charge to the seller's account
+                // $transfer = Transfer::create([
+                //     'amount' => $charge->amount,
+                //     'currency' => 'usd',
+                //     'source_transaction' => $charge->id,
+                //     'destination' => $seller->account_id,
+                // ]);
+
+                // // dd($transfer , 'transfer');
+                // $adminGetPayment = payment::where('users_id', $isUserCardSaved->users_id)->first();
+                // $adminGetPayment->admin_getpaymenttransfer_id =$transfer->id;
+                // $adminGetPayment->status = 'admin_payment';
+                // $adminGetPayment->save();
 
                 return redirect()->route('payment.show');
             } catch (\Stripe\Exception\RateLimitException $e) {
@@ -128,12 +153,14 @@ class PaymentController extends Controller
 
                 //charge payment.....
                 $charge = $stripe->charges->create([
-                    "amount" =>  2000 * 100,
+                    "amount" =>  4 * 100,   // Convert amount to cents
                     "currency" => "usd",
                     "customer" => $customer_id,
                     "description" => "My First Test Charge from practice Project",
                     "capture" => true,
                 ]);
+
+                $this->amountCharged = $charge->amount;
 
                 $userPayments = new payment;
                 $userPayments->users_id = $user->id;
@@ -145,6 +172,25 @@ class PaymentController extends Controller
                 $userPayments->payment_status = $charge->status;
                 $userPayments->user_cards_id = $token->card->id;
                 $userPayments->save();
+
+                //......................//.......................//......................
+                // Retrieve the customer and seller details
+                // $customer = Customer::where('email', $customerEmail)->first();
+                // $seller = BankInfo::where('users_id', $isUserCardSaved->users_id)->first(); // Replace with the appropriate logic to fetch the seller
+
+                // Create a transfer from the charge to the seller's account
+                // $transfer = Transfer::create([
+                //     'amount' => $charge->amount,
+                //     'currency' => 'usd',
+                //     'source_transaction' => $charge->id,
+                //     'destination' => $seller->account_id,
+                // ]);
+
+                // // dd($transfer , 'transfer');
+                // $adminGetPayment = payment::where('users_id', $isUserCardSaved->users_id)->first();
+                // $adminGetPayment->admin_getpaymenttransfer_id =$transfer->id;
+                // $adminGetPayment->status = 'admin_payment';
+                // $adminGetPayment->save();
 
                 return redirect()->route('payment.show');
             } catch (\Stripe\Exception\RateLimitException $e) {
@@ -221,7 +267,7 @@ class PaymentController extends Controller
         }
     }
 
-    //Retrieve a refund
+    // Retrieve a refund
     public function refundCharges($id)
     {
         $paymentDetail = payment::find($id);
@@ -240,5 +286,51 @@ class PaymentController extends Controller
         );
 
         dd($amountRefund);
+    }
+
+
+    //stripe admin transfer(payout) to worker(in connect account).....
+    public function payByAdminToWorker()
+    {
+        $user = User::find(3);
+        $userCard = UserCard::where('users_id', $user->id)->first();
+        // Retrieve the customer and seller details
+        // $customer = Customer::where('email', $customerEmail)->first();
+        $userPayment = payment::where('users_id', $userCard->users_id)->first();
+        $seller = BankInfo::where('users_id', $userCard->users_id)->first(); // Replace with the appropriate logic to fetch the seller
+
+        try {
+            // Create a transfer from the charge to the seller's account
+            $transfer = Transfer::create([
+                'amount' => 1 * 100,
+                'currency' => 'usd',
+                'source_transaction' => $userPayment->transaction_id,
+                'destination' => $seller->account_id,
+            ]);
+
+            $adminGetPayment = payment::where('users_id', $userCard->users_id)->first();
+            $adminGetPayment->admin_getpaymenttransfer_id = $transfer->id;
+            $adminGetPayment->status = 'admin_payout_done';
+            $adminGetPayment->save();
+            // dd($adminGetPayment, 'transfer');
+
+            return redirect()->route('payment.show');
+        } catch (\Stripe\Exception\RateLimitException $e) {
+            $error = $e->getMessage();
+        } catch (\Stripe\Exception\InvalidRequestException $e) {
+            $error = $e->getMessage();
+        } catch (\Stripe\Exception\AuthenticationException $e) {
+            $error = $e->getMessage();
+        } catch (\Stripe\Exception\ApiConnectionException $e) {
+            $error = $e->getMessage();
+        } catch (\Stripe\Exception\ApiErrorException $e) {
+            $error = $e->getMessage();
+        } catch (Exception $e) {
+            $error = $e->getMessage();
+        }
+        if (@$error) {
+            $this->cart_error = $error;
+            dd( $this->cart_error);
+        }
     }
 }

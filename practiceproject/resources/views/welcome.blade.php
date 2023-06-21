@@ -56,7 +56,7 @@
         </a>
 
         <a href="{{ route('payment.show') }}">
-            <h2>6..........Stripe Payment </h2>
+            <h2>6..........Stripe Payment (customer):- card  </h2>
         </a>
         <a href="{{ route('bankinfo.index') }}">
             <h2>7..........Stripe connect account Payout </h2>

@@ -1,17 +1,14 @@
-
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <style>
-
-.form-group input {
-    width: 23%;
-    padding: 5px;
-    /* margin: auto; */
-    display: block;
-    margin-bottom: 0px !important;
-}
-
+    .form-group input {
+        width: 23%;
+        padding: 5px;
+        /* margin: auto; */
+        display: block;
+        margin-bottom: 0px !important;
+    }
 </style>
 
 <div class='container'>
@@ -60,6 +57,25 @@
         <button type="submit">Pay</button>
     </form>
 </div>
+
+<style>
+    .contain.btn {
+    margin: 40;
+    height: 35px;
+    align-items: center;
+    padding-left: 200;
+}
+    </style>
+
+<br>
+<div class="contain btn">
+<h2> Payout by admin to worker </h2>
+
+   <h4> <a href="{{ route('payByAdminToWorker') }}">Pay Salary</a> </h4>
+</div>
+<br>
+
+
 
 
 <h2> <b> Card Details </b> </h2>
@@ -122,8 +138,8 @@
                 <td> {{ $cardDetail->balance_transaction }}</td>
                 <td> {{ $cardDetail->customer }}</td>
                 <td> {{ $cardDetail->amount }}</td>
-                <td> {{ $cardDetail->payment_status}} </td>
-                <td> <a href="{{route('refundCharges', $cardDetail->id)}}">Refund Payment</a> </td>
+                <td> {{ $cardDetail->payment_status }} </td>
+                <td> <a href="{{ route('refundCharges', $cardDetail->id) }}">Refund Payment</a> </td>
             <tr>
         @endforeach
     </tbody>
