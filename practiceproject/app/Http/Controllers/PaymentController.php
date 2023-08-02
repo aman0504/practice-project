@@ -74,26 +74,6 @@ class PaymentController extends Controller
                 // $userDetail->user_cards_id =$token->card->id;
                 $userDetail->save();
 
-
-                //......................//.......................//......................
-                // Retrieve the customer and seller details
-                // $customer = Customer::where('email', $customerEmail)->first();
-                // $seller = BankInfo::where('users_id', $isUserCardSaved->users_id)->first(); // Replace with the appropriate logic to fetch the seller
-
-                // // Create a transfer from the charge to the seller's account
-                // $transfer = Transfer::create([
-                //     'amount' => $charge->amount,
-                //     'currency' => 'usd',
-                //     'source_transaction' => $charge->id,
-                //     'destination' => $seller->account_id,
-                // ]);
-
-                // // dd($transfer , 'transfer');
-                // $adminGetPayment = payment::where('users_id', $isUserCardSaved->users_id)->first();
-                // $adminGetPayment->admin_getpaymenttransfer_id =$transfer->id;
-                // $adminGetPayment->status = 'admin_payment';
-                // $adminGetPayment->save();
-
                 return redirect()->route('payment.show');
             } catch (\Stripe\Exception\RateLimitException $e) {
                 $error = $e->getMessage();
@@ -172,25 +152,6 @@ class PaymentController extends Controller
                 $userPayments->payment_status = $charge->status;
                 $userPayments->user_cards_id = $token->card->id;
                 $userPayments->save();
-
-                //......................//.......................//......................
-                // Retrieve the customer and seller details
-                // $customer = Customer::where('email', $customerEmail)->first();
-                // $seller = BankInfo::where('users_id', $isUserCardSaved->users_id)->first(); // Replace with the appropriate logic to fetch the seller
-
-                // Create a transfer from the charge to the seller's account
-                // $transfer = Transfer::create([
-                //     'amount' => $charge->amount,
-                //     'currency' => 'usd',
-                //     'source_transaction' => $charge->id,
-                //     'destination' => $seller->account_id,
-                // ]);
-
-                // // dd($transfer , 'transfer');
-                // $adminGetPayment = payment::where('users_id', $isUserCardSaved->users_id)->first();
-                // $adminGetPayment->admin_getpaymenttransfer_id =$transfer->id;
-                // $adminGetPayment->status = 'admin_payment';
-                // $adminGetPayment->save();
 
                 return redirect()->route('payment.show');
             } catch (\Stripe\Exception\RateLimitException $e) {

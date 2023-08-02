@@ -27,6 +27,8 @@ class DemoCron extends Command
      */
     public function handle()
     {
+
+
         return Command::SUCCESS;
     }
 }

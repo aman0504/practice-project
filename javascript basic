@@ -1,0 +1,33 @@
+ <h2>..........javascript........ </h2><br>
+
+
+
+        <input type="text" name="name" id="getId" value="name">
+
+        <button type="button" onclick="submitForm()">Submit</button>
+
+        <script>
+            function submitForm() {
+                var form = document.getElementById('getId');
+
+                var inputValue = form.value;
+                console.log(inputValue);
+
+            }
+        </script>
+        
+        
+        
+        
+         <input type="text" name="name" id="getId" onInput="submitForm()">
+
+
+        <script>
+            function submitForm() {
+                var form = document.getElementById('getId');
+
+                var inputValue = form.value;
+                console.log(inputValue);
+
+            }
+        </script>

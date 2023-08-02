@@ -7,7 +7,8 @@ use App\Http\Controllers\GoogelMapController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PracticeController;
 use App\Http\Controllers\PracticeReceiverController;
-
+use App\Http\Controllers\UserAlpineController;
+use App\Http\Livewire\ChatApp;
 use Illuminate\Support\Facades\Route;
 
 
@@ -85,4 +86,14 @@ Route::post('/account/connectedAccountUpdate',[BankInfoController::class, 'conne
 // stripe admin transfer(payout) to worker(in connect account)
 Route::get('/account/payByAdminToWorker',[PaymentController::class, 'payByAdminToWorker'])->name('payByAdminToWorker');
 
+//alpine js with laravel......
 
+Route::get('/alpine/index', [UserAlpineController::class, 'index'])->name('alpine.index');
+
+
+//pdf
+Route::get('/pdf',[ClientController::class, 'pdfIndex'])->name('pdf');
+
+//real time chat application
+
+Route::get('/chatapp', ChatApp::class)->name('chatapp');

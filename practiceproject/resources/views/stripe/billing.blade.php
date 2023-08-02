@@ -72,6 +72,13 @@
 <h2> Payout by admin to worker </h2>
 
    <h4> <a href="{{ route('payByAdminToWorker') }}">Pay Salary</a> </h4>
+
+   @if (session()->has('error'))
+   <div class="alert alert-warning">
+       {{ session()->get('error') }}
+   </div>
+@endif
+
 </div>
 <br>
 

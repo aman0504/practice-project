@@ -30,7 +30,7 @@ class BankInfoController extends Controller
         if ($bankInfo) {
 
             $stripe = new \Stripe\StripeClient(config('services.stripe.secret'));
-
+// step 4.....
             try {
 
                $account = $stripe->accounts->retrieve(
@@ -67,7 +67,7 @@ class BankInfoController extends Controller
     }
 
 
-
+// step 1. create connect account ... verify on stripe side.....
     public function connectedAccountCreate()
     {
         $error = "";
@@ -144,18 +144,19 @@ class BankInfoController extends Controller
         return redirect()->back()->with('error', $error);
     }
 
-
+// step2.....
     public function bankInfoSuccess()
     {
         return redirect()->route('bankinfo.index')->with('succes', 'successs');
     }
-
+//step 2......
     public function bankInfoError()
     {
         return redirect()->route('bankinfo.index')->with('error', 'try again');
     }
 
 
+//step 3: ........
     public function saveBankDetails(Request $request)
     {
         $request->validate(
