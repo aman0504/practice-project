@@ -7,6 +7,10 @@ use App\Models\Client;
 
 class ClientController extends Controller
 {
+    public function pdfIndex()
+    {
+        return view('pdfUpload');
+    }
 
     public function create()
     {

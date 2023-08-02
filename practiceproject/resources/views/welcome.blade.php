@@ -56,12 +56,24 @@
         </a>
 
         <a href="{{ route('payment.show') }}">
-            <h2>6..........Stripe Payment </h2>
+            <h2>6..........Stripe Payment (customer):- card  </h2>
+        </a>
+        <a href="{{ route('bankinfo.index') }}">
+            <h2>7..........Stripe connect account Payout </h2>
         </a>
 
-
         <a href="{{route('selectMultipleIndex')}}">
-            <h2>7........... MutiSelector 2 </h2>
+            <h2>8........... MutiSelector 2 </h2>
+        </a>
+
+        <a href="{{route('alpine.index')}}">
+            <h2>9........... Alpine laravel CRUD </h2>
+        </a>
+        <a href="{{route('pdf')}}">
+            <h2>10........... PDF upload </h2>
+        </a>
+        <a href="{{ route('chatapp') }}">
+            <h2>11........... Chat Application </h2>
         </a>
     </div>
 

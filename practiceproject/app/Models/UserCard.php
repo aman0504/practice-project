@@ -10,5 +10,13 @@ class UserCard extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+
+    // public function payment()
+    // {
+    //     return $this->hasMany(payment::class, 'user_cards_id', 'card_id');
+    // }
+
+
 }
 

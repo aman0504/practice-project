@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\availabilityController;
+use App\Http\Controllers\BankInfoController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\GoogelMapController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PracticeController;
 use App\Http\Controllers\PracticeReceiverController;
-
+use App\Http\Controllers\UserAlpineController;
+use App\Http\Livewire\ChatApp;
 use Illuminate\Support\Facades\Route;
 
 
@@ -63,10 +65,35 @@ Route::post('/save',[ClientController::class, 'store'])->name('spatieimage.store
 Route::get('/selectIndex',[availabilityController::class,'selectIndex'])->name('selectMultipleIndex');
 Route::post('/selectMultiple',[availabilityController::class,'selectMultiple'])->name('selectMultiple');
 
-//stripe
+//stripe  customer charge api's (charge using card)........
 Route::get('/billing',[PaymentController::class,'show'])->name('payment.show');
 Route::post('/create-account', [PaymentController::class, 'getCardDetails'])->name('getCardDetails');
+Route::get('/update-card-details/{id}', [PaymentController::class, 'cardEdit'])->name('cardEdit');
+Route::post('/updateCard-details/{id}', [PaymentController::class, 'updateCard'])->name('updateCard');
+Route::delete('/delete-card/{id}', [PaymentController::class, 'delete'])->name('deleteCard');
+Route::get('/refundCharges-details/{id}', [PaymentController::class, 'refundCharges'])->name('refundCharges');
 
-Route::post('/account', [PaymentController::class, 'createAccount'])->name('stripe.create-account');
-Route::post('/payment', [PaymentController::class, 'processPayment'])->name('payment.process');
 
+//stripe connect account api (connect bank account for payment).......
+Route::get('/index',[BankInfoController::class, 'index'])->name('bankinfo.index');
+Route::get('/account-create',[BankInfoController::class, 'connectedAccountCreate'])->name('bankinfo.accountcreate');
+Route::get('/account/bankInfoError',[BankInfoController::class, 'bankInfoError'])->name('bankinfo.bankInfoError');
+Route::get('/account/bankInfoSuccess',[BankInfoController::class, 'bankInfoSuccess'])->name('bankinfo.bankInfoSuccess');
+Route::post('/account/saveBankDetails',[BankInfoController::class, 'saveBankDetails'])->name('bankinfo.saveBankDetails');
+Route::get('/account/connectedAccountDelete',[BankInfoController::class, 'connectedAccountDelete'])->name('bankinfo.connectedAccountDelete');
+Route::post('/account/connectedAccountUpdate',[BankInfoController::class, 'connectedAccountUpdate'])->name('bankinfo.connectedAccountUpdate');
+
+// stripe admin transfer(payout) to worker(in connect account)
+Route::get('/account/payByAdminToWorker',[PaymentController::class, 'payByAdminToWorker'])->name('payByAdminToWorker');
+
+//alpine js with laravel......
+
+Route::get('/alpine/index', [UserAlpineController::class, 'index'])->name('alpine.index');
+
+
+//pdf
+Route::get('/pdf',[ClientController::class, 'pdfIndex'])->name('pdf');
+
+//real time chat application
+
+Route::get('/chatapp', ChatApp::class)->name('chatapp');
