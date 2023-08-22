@@ -9,8 +9,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
+use App\Models\User;
+
 class ProfileController extends Controller
 {
+
     /**
      * Display the user's profile form.
      */
@@ -57,4 +60,18 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+
+    public function profileImage(Request $request)
+    {
+        $user = User::find(auth()->user()->id);
+        if ($request->image) {
+            $user->addMedia($request->image)->toMediaCollection('image');
+        }
+
+        return redirect()->back();
+    }
+
+
+
 }

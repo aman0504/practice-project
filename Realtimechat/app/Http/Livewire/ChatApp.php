@@ -19,6 +19,8 @@ class ChatApp extends Component
     //jine msg kita , jinu msg kita sirf ona dona de msg get karne a and shoe karne a   done.....
     // 5. i am using spatie to manage(save) images, videos, voicemsg
     // 6. how to use and save emoji's
+    //7.  use Laravel Echo to listen for these broadcasted events.
+    // 8. use pusher , setup for realtime notification.
 
 
     use WithFileUploads;
