@@ -6,19 +6,20 @@ use Livewire\Component;
 use App\Models\Category as ModelsCategory;
 use App\Models\Subcategory as ModelsSubcategory;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\WithFileUploads;
 
 class Subcategory extends Component
 {
+    use WithFileUploads;
     use LivewireAlert;
-    public $categories_id, $title, $subCategories , $image, $subcategory_id;
-    public $subCat;
+    public $categories_id, $title, $subCategories, $image, $subcategory_id;
+    public $subCat, $subCategoryId;
 
     protected $listeners = ['confirmedDelete'];
 
     public function mount()
     {
         $this->subCategories = ModelsSubcategory::with('category')->get();
-
     }
 
     public function resetInput()
@@ -27,6 +28,7 @@ class Subcategory extends Component
         $this->image = '';
         $this->categories_id = '';
         $this->subcategory_id = '';
+        $this->subCategoryId = '';
     }
 
     public function showModelSubcategory()
@@ -42,30 +44,50 @@ class Subcategory extends Component
     public function store()
     {
         // validation pending here
-        $subCategory = new ModelsSubcategory();
-        $subCategory->categories_id = $this->categories_id;
-        $subCategory->title = $this->title;
-        $subCategory->save();
 
+        if ($this->subCategoryId) {
+            $subCategory = ModelsSubcategory::find($this->subCategoryId);
+            $subCategory->categories_id = $this->categories_id;
+            $subCategory->title = $this->title;
+            $subCategory->save();
+
+            if ($this->image) {
+                $subCategory->clearMediaCollection('image');
+                $subCategory->addMedia($this->image)
+                    ->toMediaCollection('image');
+            }
+        } else {
+            $subCategory = new ModelsSubcategory();
+            $subCategory->categories_id = $this->categories_id;
+            $subCategory->title = $this->title;
+            $subCategory->save();
+
+            if ($this->image) {
+                $subCategory->addMedia($this->image)
+                    ->toMediaCollection('image');
+            }
+        }
+        if ($this->subCategoryId) {
+            $this->alert('success', 'Sub-Category updated successfully.');
+        } else {
+            $this->alert('success', 'Sub-Category saved successfully.');
+        }
         $this->resetInput();
+
         $this->closeModel();
-        $this->alert('success', 'Sub-Category saved successfully.');
 
     }
 
     public function edit($id)
     {
         $this->subCat = ModelsSubcategory::find($id);
-        $this->subcategory_id= $this->subCat->id;
+        $this->subcategory_id = $this->subCat->id;
         $this->title = $this->subCat->title;
         $this->categories_id = $this->subCat->categories_id;
 
+        // dd($this->subCat->id);
+        $this->subCategoryId =  $this->subCat->id;
         $this->emit('showModelSubcategory');
-
-    }
-
-    public function update(){
-
     }
 
     public function deleteCategory($id)
@@ -97,5 +119,4 @@ class Subcategory extends Component
         $categories = ModelsCategory::get();
         return view('livewire.category.subcategory', compact('categories'));
     }
-
 }

@@ -10,17 +10,15 @@
 
 
         <!-- Modal -->
-        <div wire:ignore class="modal fade" id="showSubcategory" tabindex="-1" aria-labelledby="exampleModalLabel"
+        <div wire:ignore.self class="modal fade" id="showSubcategory" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
+
                         <h5 class="modal-title" id="showSubcategory"> <b>
-                            @if ($subcategory_id)
-                                Update
-                            @else
-                                Add
-                            @endif Category  </b>
+
+                                {{ !empty($subCategoryId) ? 'Update' : 'Add' }} Category </b>
                         </h5>
 
                         <button type="button" wire:click="closeModel" class="btn-close" data-bs-dismiss="modal"
@@ -47,6 +45,7 @@
                         <div>
                             <label>Image </label>
                             <input type="file" wire:model="image" />
+
                             @error('title')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -54,7 +53,12 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" wire:click="store"> @if($subcategory_id) Update @else Add @endif
+                        <button type="button" class="btn btn-primary" wire:click="store">
+                            @if ($subCategoryId)
+                                Update
+                            @else
+                                Add
+                            @endif
                         </button>
                     </div>
                 </div>
@@ -83,7 +87,8 @@
                             <td scope="row">{{ $loop->iteration }}</td>
                             <td>{{ $subcategory->title ?? null }}</td>
                             <td>{{ !empty($subcategory->category->title) ? $subcategory->category->title : null }}</td>
-                            <td>Image</td>
+                            <td> <img src="{{ asset($subcategory->getFirstMediaUrl('image')) }}"
+                                    style="max-width: 100px;"></td>
                             <td>
                                 <a href="javascript::void(0)" id="editModal" class="unlockss"
                                     wire:click="edit({{ $subcategory->id }})"><i
@@ -104,7 +109,6 @@
             </tbody>
         </table>
     </div>
-
 
 </div>
 

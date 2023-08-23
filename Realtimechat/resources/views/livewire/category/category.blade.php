@@ -1,22 +1,30 @@
 <div>
-    <a href="{{route('subcategory')}}"> Subcategory </a>
-    <h2> Add Category </h2>
-    <div class="form-group">
-        <div>
+    <div class="container">
+        <div class="btn-container">
+            <a href="{{ route('subcategory') }}" class="btn-subcategory">Subcategory</a>
+        </div>
+        <h2> @if($categoryId) Update @else Add @endif Category</h2>
+        <div class="form-group">
             <label>Title</label>
-            <input type="text" wire:model="title" />
+            <input type="text" wire:model="title">
             @error('title')
                 <span class="text-danger">{{ $message }}</span>
             @enderror
         </div>
-        <br> <br>
-        <label>Description </label>
-        <textarea wire:model="description"></textarea>
-        @error('description')
-            <span class="text-danger">{{ $message }}</span>
-        @enderror
-        <br>
-        <button class="btn btn-success" type="submit" wire:click="store"> Submit </button>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea wire:model="description"></textarea>
+            @error('description')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+        </div>
+        <div class="btn-container">
+            @if($categoryId)
+            <button class="btn-success" type="submit" wire:click="store({{$categoryId}})">Update</button>
+            @else
+            <button class="btn-success" type="submit" wire:click="store">Submit</button>
+            @endif
+        </div>
     </div>
     <br>
 
@@ -42,7 +50,7 @@
                                     wire:click="editCategory({{ $category->id }})"><i
                                         class="fa-solid fa-pen-to-square"></i></a>
 
-                                <a href="javascript::void(0)"  class="red-bordered-full-btn remove-member"
+                                <a href="javascript::void(0)" class="red-bordered-full-btn remove-member"
                                     wire:click="deleteCategory({{ $category->id }})"><i
                                         class="fa-solid fa-trash"></i></a>
                             </td>
@@ -90,11 +98,11 @@
         </div>
     </div>
 
-    @push('scripts')
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-        <script>
+    {{-- @push('scripts') --}}
+        {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script> --}}
+        {{-- <script>
             $(document).ready(function() {
-                window.livewire.on('showModelCategory', () => {
+                window.livewire.on('showModal', () => {
                     $('#editModal').modal('show');
                 });
 
@@ -103,4 +111,58 @@
                 })
             });
         </script>
-    @endpush
+    @endpush --}}
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .text-danger {
+            color: red;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .btn-success {
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-subcategory {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>

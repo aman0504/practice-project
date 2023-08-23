@@ -10,7 +10,7 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class ProfileAvailabilty extends Component
 {
-    // use LivewireAlert;
+    use LivewireAlert;
     public $userId;
     public $days = [];
     public $availablityData = [];
@@ -152,7 +152,7 @@ class ProfileAvailabilty extends Component
             CleanerAvailabilityDayTime::insert($availabilityTimes);
         }
 
-        // $this->alert('success', 'Availability saved successfully');
+        $this->alert('success', 'Availability saved successfully');
     }
 
     public function removeTime($dayIndex, $timeIndex)

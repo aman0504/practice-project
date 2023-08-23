@@ -12,6 +12,8 @@ class Category extends Component
     public $title, $description, $categories_id, $title1;
     public $categories, $category_id;
     protected $listeners = ['confirmedDelete'];
+    public $categoryId;
+
     // composer require jantinnerezo/livewire-alert:^2.1  .... use this package for sweetalert
 
 
@@ -46,20 +48,35 @@ class Category extends Component
     {
         $this->validate();
 
-        $category = new ModelsCategory;
-        $category->title = $this->title;
-        $category->description = $this->description;
-        $category->save();
-        $this->alert('success', 'Category saved successfully.');
+        if ($this->categoryId) {
+            $category = ModelsCategory::find($this->categoryId);
+            $category->title = $this->title;
+            $category->description = $this->description;
+            $category->save();
+        } else {
+            $category = new ModelsCategory;
+            $category->title = $this->title;
+            $category->description = $this->description;
+            $category->save();
+        }
+
+        if ($this->categoryId) {
+            $this->alert('success', 'Category updated successfully.');
+        } else {
+            $this->alert('success', 'Category saved successfully.');
+        }
+
         $this->resetInput();
     }
 
     public function editCategory($id)
     {
-        $category = ModelsCategory::findOrFail($this->category_id);
+        $category = ModelsCategory::findOrFail($id);
         $this->title = $category->title;
         $this->description = $category->description;
-        $this->showModelCategory();
+
+        $this->categoryId = $category->id;
+        // $this->showModelCategory();
     }
 
 
@@ -87,15 +104,15 @@ class Category extends Component
         $this->alert('success', 'Category deleted successfully');
     }
 
-    public function showModelCategory()
-    {
-        $this->emit('showModal');
-    }
+    // public function showModelCategory()
+    // {
+    //     $this->emit('showModal');
+    // }
 
-    public function closeModal()
-    {
-        $this->emit('closeModal');
-    }
+    // public function closeModal()
+    // {
+    //     $this->emit('closeModal');
+    // }
 
 
 
